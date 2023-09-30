@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         StringBuilder sb = new StringBuilder();
 
         int count = 0;
@@ -125,6 +125,108 @@ public class Main {
         for(int i=21;i<=255;i++){
             System.out.printf("%8d ", averCount[i]);
         }
+        System.out.println();
+        line();
+        System.out.println("번호합 120미만, 160 초과 제외");
+        count = getCount(120,160);
+        System.out.println("경우의 수 : " + count);
+        System.out.println("제외된 경우의 수 : " + (8145060-count));
+        line();
+
+
+        boolean[] numCheck = new boolean[45];
+        numCheck[1] = numCheck[4] = numCheck[18] = numCheck[19] = numCheck[27] = numCheck[38] = numCheck[40] = true;
+        count = 0;
+        for(int i=1;i<=45;i++){
+            if(numCheck[i-1]) continue;
+            for(int j=i+1; j<=45;j++){
+                if(numCheck[j-1]) continue;
+                for(int k=j+1; k<=45;k++){
+                    if(numCheck[k-1]) continue;
+                    for(int l=k+1;l<=45;l++){
+                        if(numCheck[l-1]) continue;
+                        for(int m=l+1;m<=45;m++){
+                            if(numCheck[m-1]) continue;
+                            for(int n=m+1;n<=45;n++){
+                                if(numCheck[n-1]) continue;
+                                int sum = i+j+k+l+m+n;
+                                if(sum>=120 && sum <=160) {
+                                    count++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("2, 5, 19, 20, 28, 39, 41를 제외한 번호합 120 ~ 160의 경우의 수 " + count);
+
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        StringTokenizer st;
+//        for(int i=0;i<1086;i++){
+//            st = new StringTokenizer(br.readLine(), "\t");
+//            int[] temp = new int[6];
+//            for(int j=0;j<6;j++){
+//                temp[j] = Integer.parseInt(st.nextToken());
+//                System.out.print(temp[j] + " ");
+//            }
+//            System.out.println();
+//        }
+
+//        System.out.println("최근 회차를 입력하시오.");
+//        int no = Integer.parseInt(br.readLine());
+//
+//        System.out.println("1회차 부터 최근 회차까지 입력하시오");
+//        int[] release = new int[45];
+//        for(int i=0;i<no;i++){
+//            for(int k=0;k<45;k++){
+//                release[k]++;
+//            }
+//            st = new StringTokenizer(br.readLine(),"\t");
+//            for(int j=0;j<6;j++){
+//                release[Integer.parseInt(st.nextToken())-1] = 0;
+//            }
+//        }
+//        System.out.println("연속 미출현 정보입니다.");
+//        for(int i=0;i<45;i++){
+//            System.out.print((i+1) + "번은 연속 " + release[i] + "번 미출현 했습니다.");
+//            System.out.println();
+//        }
+
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+
+        int[][] history = new int[1086][7];
+        for(int i=0;i<1086;i++){
+            st = new StringTokenizer(br.readLine(), "\t");
+            int total = 0;
+            for(int j=0;j<6;j++){
+                int temp = Integer.parseInt(st.nextToken());
+                total += temp;
+                history[i][j] = temp;
+            }
+            history[i][6] = total;
+        }
+
+        count = 0;
+        for(int i=0;i<1085;i++){
+            for(int j=i+1; j<1086;j++){
+                if(history[i][6] == history[j][6]){
+                    boolean flag = true;
+                    for(int k=0;k<6;k++){
+                        if(history[i][k] != history[j][k]){
+                            flag = false;
+                            break;
+                        }
+                    }
+                    if(flag) count++;
+                }
+            }
+        }
+
+        System.out.println("같은 번호의 수는 " + count);
+
     }
 
     public static void line(){
