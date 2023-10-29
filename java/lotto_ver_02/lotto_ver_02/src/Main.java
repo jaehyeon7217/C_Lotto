@@ -25,11 +25,11 @@ public class Main {
          */
         while (true) {
             System.out.println("금주 회자를 입력해주세요. (예) 1086");
-            String tempStr = inputStr(1,999999999);
+            String tempStr = inputStr(1, 999999999);
 
             thisWeekNo = Integer.parseInt(tempStr);
             System.out.println("입력하신 회차는 " + thisWeekNo + "회 입니다. 맞으면 1번 틀리면 2번을 눌러주세요.");
-            tempStr = inputStr(1,2);
+            tempStr = inputStr(1, 2);
 
             int tempFlag = Integer.parseInt(tempStr);
             if (tempFlag == 1) break;
@@ -89,7 +89,7 @@ public class Main {
          */
 
         boolean operator = true;
-        while(operator){
+        while (operator) {
             System.out.println("동작을 선택해주세요.");
             System.out.println("1. 번호 생성");
             System.out.println("2. 번호 통계 조회");
@@ -99,10 +99,10 @@ public class Main {
             int op = Integer.parseInt(inputStr(0, 3));
 
 
-            if(op == 0){
+            if (op == 0) {
                 operator = false;
                 break;
-            } else if(op == 1){
+            } else if (op == 1) {
                 System.out.println("- 번호를 생성합니다.");
                 System.out.println("생성할 조합의 수를 정하세요. 최소 1, 최대 100");
                 int lottoCount = Integer.parseInt(inputStr(1, 100));
@@ -113,35 +113,35 @@ public class Main {
 
 
                 System.out.println("구간합을 설정하시려면 1번, 전체 구간에서 번호 출력을 원하시면 0번을 입력해주세요.");
-                int tempNum = Integer.parseInt(inputStr(0,1));
+                int tempNum = Integer.parseInt(inputStr(0, 1));
 
                 boolean sumFlag = true;
 
-                if(tempNum == 0){
+                if (tempNum == 0) {
                     System.out.println("다음 단계로 넘어갑니다.");
                     sumFlag = false;
                 }
 
 
-                while(sumFlag){
+                while (sumFlag) {
                     System.out.println("번호 합 구간을 설정합니다. 생성된 번호의 합은 입력한 최솟값과 최댓값의 사이에서 생성됩니다.");
                     System.out.println("** ex) 120 ~ 150으로 설정되었다면 번호합이 119이하나 151이상은 버리고 새로운 조합을 생성합니다.");
                     System.out.println("최소 값을 설정하세요. 최소 21, 최대 254입니다.");
-                    int tempMin = Integer.parseInt(inputStr(21,254));
+                    int tempMin = Integer.parseInt(inputStr(21, 254));
                     System.out.println("최대 값을  설정하세요. 최소 22, 최대 255입니다.");
                     int tempMax = Integer.parseInt(inputStr(22, 255));
-                    if(tempMin >= tempMax){
+                    if (tempMin >= tempMax) {
                         System.out.println("최솟값이 최댓값보다 크거나 같습니다. 다시 입력합니다.");
-                    }else {
-                        System.out.println("입력하신 최소 값은 "+ tempMin + "최대 값은 " + tempMax + "입니다.");
+                    } else {
+                        System.out.println("입력하신 최소 값은 " + tempMin + "최대 값은 " + tempMax + "입니다.");
                         System.out.println("맞으면 1번 틀리면 2번을 입력해주세요.");
-                        tempNum = Integer.parseInt(inputStr(1,2));
-                        if(tempNum == 1){
+                        tempNum = Integer.parseInt(inputStr(1, 2));
+                        if (tempNum == 1) {
                             System.out.println("설정이 완료되었습니다.");
                             sumMin = tempMin;
                             sumMax = tempMax;
                             sumFlag = false;
-                        }else{
+                        } else {
                             System.out.println("설정을 다시 시작합니다.");
                         }
                     }
@@ -149,11 +149,11 @@ public class Main {
 
                 System.out.println("미사용 번호를 입력합니다.");
                 System.out.println("입력을 원하시면 1번 아니면 0번을 눌러주세요.");
-                tempNum = Integer.parseInt(inputStr(0,1));
+                tempNum = Integer.parseInt(inputStr(0, 1));
 
                 boolean notUseNumberFlag = true;
 
-                if(tempNum == 0){
+                if (tempNum == 0) {
                     System.out.println("다음 단계로 넘어갑니다.");
                     notUseNumberFlag = false;
                 }
@@ -162,64 +162,133 @@ public class Main {
 
                 System.out.println("사용하지 않을 번호를 입력하세요. 다시 입력하면 사용하기로 바뀝니다.");
                 System.out.println("입력이 끝나면 0번을 입력해주세요.");
-                while(notUseNumberFlag){
+                while (notUseNumberFlag) {
                     int tempNumber = Integer.parseInt(inputStr(0, 45));
-                    if(tempNumber == 0){
+                    if (tempNumber == 0) {
                         System.out.println("입력을 종료합니다.");
                         printNotUseNumber(notUseNumberCheck);
-                        notUseNumberFlag=false;
+                        notUseNumberFlag = false;
                         break;
                     }
                     tempNumber -= 1;
                     notUseNumberCheck[tempNumber] = !notUseNumberCheck[tempNumber];
-                    if(notUseNumberCheck[tempNumber]){
-                        System.out.println((tempNumber+1) + "번을 사용하지 않습니다.");
-                    }else{
-                        System.out.println((tempNumber+1) + "번을 사용합니다.");
+                    if (notUseNumberCheck[tempNumber]) {
+                        System.out.println((tempNumber + 1) + "번을 사용하지 않습니다.");
+                    } else {
+                        System.out.println((tempNumber + 1) + "번을 사용합니다.");
                     }
                 }
 
                 System.out.println("번호 생성을 시작합니다.");
                 LuckyNumber[] lotto = new LuckyNumber[lottoCount];
-                for(int i=0;i<lottoCount;i++){
+                for (int i = 0; i < lottoCount; i++) {
                     lotto[i] = new LuckyNumber(sumMin, sumMax, notUseNumberCheck);
                     lotto[i].createNumber();
                 }
 
                 br.readLine();
 
-            } else if(op == 2){
+            } else if (op == 2) {
                 System.out.println(" 번호 통계를 조회합니다.");
-            } else if(op == 3){
+
+                System.out.println("1. 미출현 번호");
+                System.out.println("2. 번호합 구간별 출현 횟수");
+
+                int tempNum = Integer.parseInt(inputStr(1, 2));
+
+                if (tempNum == 1) {
+                    int[] unappearedNumbers = new int[45];
+
+                    for (int i = 0; i < thisWeekNo; i++) {
+                        for (int j = 0; j < 45; j++) {
+                            unappearedNumbers[j]++;
+                        }
+                        for (int j = 0; j < 6; j++) {
+                            unappearedNumbers[historyNum[i][j] - 1] = 0;
+                        }
+                    }
+
+                    for (int i = 0; i < 45; i++) {
+                        System.out.println((i + 1) + "번은 " + unappearedNumbers[i] + "주 전에 출현하였습니다.");
+                    }
+
+                    System.out.println("10주 이상 미출현 번호는 다음과 같습니다.");
+                    for (int i = 0; i < 45; i++) {
+                        if (unappearedNumbers[i] >= 10) {
+                            System.out.print((i + 1) + " ");
+                        }
+                    }
+                    System.out.println();
+
+                    System.out.println("15주 이상 미출현 번호는 다음과 같습니다.");
+                    for (int i = 0; i < 45; i++) {
+                        if (unappearedNumbers[i] >= 15) {
+                            System.out.print((i + 1) + " ");
+                        }
+                    }
+                    System.out.println();
+                } else {
+                    int[] sumNum = new int[256];
+                    for (int i = 0; i < thisWeekNo; i++) {
+                        sumNum[historyNum[i][6]]++;
+                    }
+
+                    for (int i = 0; i < 256; i++) {
+                        if (sumNum[i] != 0)
+                            System.out.println("번호합 " + i + " 의 출현 횟수 : " + sumNum[i]);
+                    }
+
+                    int sliding =0;
+                    int maxArea = 0;
+                    int start = 0;
+                    int end = 20;
+                    for(int i=0;i<20;i++){
+                        sliding += sumNum[i];
+                    }
+
+                    for(int i=20;i<256;i++){
+                        sliding += sumNum[i];
+                        sliding -= sumNum[i-20];
+
+                        if(sliding > maxArea){
+                            maxArea= sliding;
+                            start = i-20;
+                            end = i;
+                        }
+                    }
+                    System.out.println("연속된 20개의 번호합 중 가장 높은 출현횟수는 " + maxArea + "이며 구간은 "+ start + " ~ " + end + "입니다.");
+                }
+
+            } else if (op == 3) {
                 System.out.println(" 경우의 수를 조회합니다.");
             }
         }
 
     }
 
-    public static void printNotUseNumber(boolean[] check){
+    public static void printNotUseNumber(boolean[] check) {
         System.out.println("제외할 번호를 출력합니다.");
-        for(int i=0;i<45;i++){
-            if(check[i]){
-                System.out.print( (i+1) + "번 ");
+        for (int i = 0; i < 45; i++) {
+            if (check[i]) {
+                System.out.print((i + 1) + "번 ");
             }
         }
         System.out.println();
     }
 
-    public static String inputStr(int one, int two) throws Exception{
+    public static String inputStr(int one, int two) throws Exception {
         String tempStr = br.readLine();
         boolean numberOnlyCheckFlag = true;  // 숫자만 있는지 확인
         boolean numberRangeCheckFlag = true; // 숫자가 10억을 넘어가지 않는지 확인
         boolean oneOrTwoFlag = true; // 숫자가 one 이상 two 이하 인지 확인
-        while (numberOnlyCheckFlag || numberRangeCheckFlag ||oneOrTwoFlag) {
+        while (numberOnlyCheckFlag || numberRangeCheckFlag || oneOrTwoFlag) {
             if (numberOnlyCheckFlag = !numberOnlyCheck(tempStr)) {
                 System.out.println("숫자가 아닌 다른 문자가 포함되었습니다. 다시 입력해 주세요.");
                 tempStr = br.readLine();
             } else if (numberRangeCheckFlag = !numberRangeCheck(tempStr)) {
                 System.out.println("10억이 넘는 수입니다. 다시 입력해 주세요.");
                 tempStr = br.readLine();
-            } else if(oneOrTwoFlag = !oneOrTwoCheck(tempStr, one, two)){
+            } else if (oneOrTwoFlag = !oneOrTwoCheck(tempStr, one, two)) {
                 System.out.println(one + " 이상 " + two + "이하가 아닌 다른 수를 입력하셨습니다. 다시 입력해 주세요.");
                 tempStr = br.readLine();
             }
@@ -255,9 +324,9 @@ public class Main {
         return false;
     }
 
-    public static boolean oneOrTwoCheck(String num, int one, int two){
+    public static boolean oneOrTwoCheck(String num, int one, int two) {
         int number = Integer.parseInt(num);
-        return number >= one && number <=two;
+        return number >= one && number <= two;
     }
 
 }
