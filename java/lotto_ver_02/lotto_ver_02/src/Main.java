@@ -90,15 +90,19 @@ public class Main {
 
         boolean operator = true;
         while (operator) {
+            makeLine();
             System.out.println("동작을 선택해주세요.");
             System.out.println("1. 번호 생성");
             System.out.println("2. 번호 통계 조회");
             System.out.println("3. 경우의 수 조회");
+            System.out.println("4. test");
             System.out.println("0. 종료");
+            makeLine();
 
-            int op = Integer.parseInt(inputStr(0, 3));
+            int op = Integer.parseInt(inputStr(0, 4));
 
 
+            makeLine();
             if (op == 0) {
                 operator = false;
                 break;
@@ -238,29 +242,128 @@ public class Main {
                             System.out.println("번호합 " + i + " 의 출현 횟수 : " + sumNum[i]);
                     }
 
-                    int sliding =0;
+                    int sliding = 0;
                     int maxArea = 0;
                     int start = 0;
                     int end = 20;
-                    for(int i=0;i<20;i++){
+                    for (int i = 0; i < 20; i++) {
                         sliding += sumNum[i];
                     }
 
-                    for(int i=20;i<256;i++){
+                    for (int i = 20; i < 256; i++) {
                         sliding += sumNum[i];
-                        sliding -= sumNum[i-20];
+                        sliding -= sumNum[i - 20];
 
-                        if(sliding > maxArea){
-                            maxArea= sliding;
-                            start = i-20;
+                        if (sliding > maxArea) {
+                            maxArea = sliding;
+                            start = i - 20;
                             end = i;
                         }
                     }
-                    System.out.println("연속된 20개의 번호합 중 가장 높은 출현횟수는 " + maxArea + "이며 구간은 "+ start + " ~ " + end + "입니다.");
+                    System.out.println("연속된 20개의 번호합 중 가장 높은 출현횟수는 " + maxArea + "이며 구간은 " + start + " ~ " + end + "입니다.");
                 }
 
             } else if (op == 3) {
                 System.out.println(" 경우의 수를 조회합니다.");
+            } else if (op == 4) {
+                System.out.println("test");
+                System.out.println("1 or 2 or 3");
+                int aaa = Integer.parseInt(inputStr(1,3));
+                if(aaa==1) {
+                    for (int n = 0; n < 6; n++) {
+                        int num = historyNum[thisWeekNo - 1][n];
+
+                        System.out.println("입력하신 번호는 " + num + " 입니다.");
+                        System.out.println("조회를 시작합니다.");
+
+                        int[] checkNum = new int[45];
+                        int checkCount = 0;
+
+                        for (int i = 0; i < thisWeekNo - 1; i++) {
+                            boolean flag = false;
+                            for (int j = 0; j < 6; j++) {
+                                if (historyNum[i][j] == num) {
+                                    flag = true;
+                                    checkCount++;
+                                    break;
+                                }
+                            }
+
+                            if (flag) {
+                                for (int j = 0; j < 6; j++) {
+                                    checkNum[historyNum[i + 1][j] - 1]++;
+                                }
+                            }
+                        }
+
+//                    System.out.println("입력하신 " + num + "번은 총 " + checkCount + "번 등장했습니다.");
+//                    System.out.println("입력하신 " + num + "번 뒤에 나온 수는 다음과 같습니다.");
+
+                        for (int i = 0; i < 45; i++) {
+                            if (checkNum[i] < 10)
+                                System.out.println((i + 1) + "번 등장 횟수 : " + checkNum[i]);
+                        }
+                        System.out.println("이상입니다.");
+                        makeLine();
+                    }
+                }
+                else if(aaa==2){
+                    int[] rangeNum = new int[46];
+                    int[] sumNum = new int[46];
+                    int[] countNum = new int[46];
+
+                    for(int i=0;i<thisWeekNo;i++){
+                        for(int j=1;j<=45;j++){
+                            rangeNum[j]++;
+                        }
+                        for(int j=0;j<6;j++){
+                            countNum[historyNum[i][j]]++;
+                            sumNum[historyNum[i][j]] += rangeNum[historyNum[i][j]]-1;
+                            rangeNum[historyNum[i][j]] = 0;
+                        }
+                    }
+                    for(int i=1;i<46;i++){
+                        sumNum[i]+=rangeNum[i];
+                    }
+
+                    for(int i=1;i<=45;i++){
+                        System.out.println(i+"번의 출현 횟수 = " + countNum[i] );
+                        System.out.println(i+"번의 평균 출현 기간 = " + (sumNum[i]/countNum[i]));
+                        System.out.println(i+"번의 안나온 기간 = " + rangeNum[i] );
+                    }
+
+                }
+                else if(aaa==3){
+                    int count = 0;
+                    int checkFlag = Integer.parseInt(br.readLine());
+                    int noCount=0;
+                    for(int i=0;i<thisWeekNo;i++){
+                        boolean flag = true;
+                        int cc = 1;
+                        for(int j=1;j<6;j++){
+                            if(historyNum[i][j]-1 == historyNum[i][j-1]){
+                                cc++;
+                                flag = false;
+                            }else{
+                                if(cc==checkFlag){
+                                    count++;
+                                    cc=1;
+                                    System.out.println((i+1)+"회차");
+                                }else{
+                                    cc=1;
+                                }
+                            }
+                        }
+                        if(cc==checkFlag){
+                            count++;
+                            System.out.println((i+1)+"회차");
+                        }
+                        if(flag) noCount++;
+                    }
+                    System.out.println(checkFlag+"번 연속 나온 횟수는 "+count+"입니다.");
+                    System.out.println("한 번도 연속수가 없는 회차 수는 " + noCount + "입니다.");
+                }
+
             }
         }
 
